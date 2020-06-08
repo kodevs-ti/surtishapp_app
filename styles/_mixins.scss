@@ -1,0 +1,30 @@
+@mixin gradientButton() {
+    background-image: linear-gradient(to right, $gradient-1, $gradient-2);
+    width: 270px;
+    height: 50px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    text-align: center;
+    border: none;
+    color: $white;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+@mixin desktop {
+    @media screen and (min-width: $desktop) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media screen and (min-width: $tablet) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media screen and (min-width: $mobile) {
+        @content
+    }
+}
