@@ -1,0 +1,53 @@
+
+.wrapper-register {
+    &.bg-img-intro {
+        width: 100%;
+        height: 100%;
+        position : relative;
+        &::before {
+            content : '';
+            position : absolute;
+            top: 0;
+            left: 0;
+            width : 100%;
+            height : 100%;
+            background: $black;
+            opacity: 0.62;
+        }
+        .child-intro {
+            position : relative;
+        }
+    }
+
+    .card-info-scan {
+        background-color: $white;
+        width: 80%;
+        margin: 0 auto;
+        border-radius:5px;
+        padding: 20px;
+        margin-block-start: auto;
+        
+        .info-title {
+            color: $gray;
+            font-size: 15px;
+            text-align: center;
+
+            span {
+                font-weight: bold
+            }
+        }
+
+        .info-description {
+            color: $gray;
+            font-size:12px;
+            width: 50%;
+            margin:0;
+        }
+
+        .btn-register {
+            @include gradientButton()
+        }
+    }
+}
+
+

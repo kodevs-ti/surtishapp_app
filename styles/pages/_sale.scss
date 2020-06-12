@@ -1,0 +1,228 @@
+.sale-wrapper {
+
+    .wrapper-transparent {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        background-color: $black;
+        opacity: 0.8;
+    }
+
+    .bg-curve {
+        background-image: $curve;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        height: 237px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: space-evenly;
+
+        .info-profile-wrapper {
+            color: $white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            .profile-store {
+                font-size: 17px;
+                font-weight: 600;
+            }
+            .profile-name {
+                font-size: 16px;
+                font-weight: 400;
+            }
+            .profile-role {
+                font-size: 14px;
+                font-weight: 300;
+            }
+            .text{
+                margin: 0;
+            }
+        }
+    }
+
+    .card-info-sale {
+        position: relative;
+        z-index: 2;
+        background-color: $white;
+        width: 80%;
+        margin: 0 auto;
+        border-radius:5px;
+        padding: 15px;
+        margin-block-start: auto;
+        
+        .info-title {
+            color: $gray;
+            font-size: 15px;
+            text-align: center;
+
+            span {
+                font-weight: bold
+            }
+        }
+
+        .title-principal{
+            font-size: 17px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: $black-light;
+        }
+        .title-secondary{
+            font-weight: 500;
+            font-size: 15px;  
+            text-transform: uppercase;
+            color: rgba($gray, 0.95)  
+        }
+        .info-description {
+            color: $gray;
+            font-size:12px;
+            width: 50%;
+            margin:0;
+        }
+
+        .btn-sale {
+            @include gradientButton();
+        }
+
+        .btn-sale-general {
+            @include styleButton(transparent, $primary-blue);
+        }
+
+        .label-style {
+            @include styleLabel()
+        }
+
+        .form-sale {
+            .input-style {
+                @include styleInput()
+            }
+
+            .icon-inside-input {
+                position: relative;
+                .icon-code {
+                    position: absolute;
+                    width: 15px;
+                    height: 15px;
+                    background-image: $icon-code;
+                    top: 17.5px;
+                    left: 14px;
+                }
+            }
+        }
+    }
+}
+
+.list-products {
+    width: 95%;
+    margin: 0 auto;
+    padding: 10px 15px;
+    background-color: $white;
+    box-shadow: 2px 3px 11px 0px rgba(0,0,0,0.08);
+    border-radius: 5px;
+    .scroll {
+        background-color: inherit;
+        width: 100%;
+        max-height: calc(100vh - 472px);
+        height: calc(100vh - 122px);
+        overflow-y: scroll;
+    }
+    .scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .img-product {
+        width: 60px;
+        height: 60px;
+    }
+
+    .item-product {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .detail-product {
+            p{
+                margin: 0;
+            }
+            .product-name {
+               font-size:17px;
+                color: $gray-medium;
+                font-weight: normal;
+            }
+            .product-price-meassure {
+                color: $primary-blue;
+                font-family: $font-marvel;
+                font-size: 15px;
+                span {
+                    font-weight: 500;
+                    
+                }
+            }
+        }
+    }
+
+    .color-line {
+        border-color: $primary-blue;
+    }
+
+    .info-sale-pay {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        p{
+            font-family: $font-marvel;
+            color: $primary-blue;
+            margin:0;
+            &.info-total-products {
+                font-weight: normal;
+                font-size: 25px;
+
+                span {
+                    border-radius: 10px;
+                    background-color: $primary-blue;
+                    color: $white;
+                    padding: 1px 10px;
+                    font-weight: 600;
+                    font-size: 12px;
+                }
+            }
+
+            &.info-total-to-pay {
+                font-weight: 500;
+                font-size: 35px;
+                line-height: 42px;
+            }
+        }
+
+        .btn-pay {
+            @include gradientButton();
+            width: 110px;
+        }
+    }
+}
+
+.wrapper-panel {
+    .wrapper-transparent {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        background-color: $black;
+        opacity: 0.8;
+    }
+    
+    .card-info {
+        position: relative;
+        z-index: 2;
+        background-color: $white;
+        width: 80%;
+        margin: 0 auto;
+        border-radius:5px;
+        padding: 15px;
+        top: calc(385px - 100vh);
+    } 
+}
+

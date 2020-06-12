@@ -1,0 +1,42 @@
+.form-product {
+    padding: 10px 20px;
+    width: 95%;
+    margin: 0 auto;
+    box-shadow: 2px 3px 11px 0px rgba(0,0,0,0.08);
+    border-radius:5px;
+    .input-style {
+        @include styleInput();
+    }
+    .label-style {
+        @include styleLabel()
+    }
+    .select-style {
+        @include styleSelect();
+    }
+    .title-style {
+        @include styleTitle();
+    }
+
+    .title-style-sec {
+        @include styleTitleLeft();
+    }
+
+    .title-style-meassure {
+        @include styleTitleCenter();
+    }
+
+    .wrapper-profit {
+        background-color:$gray-medium-light;
+        padding: 15px;
+        color: $gray-light;
+        font-size: 14px;
+        font-weight: 300;
+        p{
+            margin: 0;
+
+            span {
+                font-weight: 500;
+            }
+        }
+    }
+}

@@ -1,0 +1,16 @@
+* {
+    font-family: $font-montserrat;
+}
+
+.btn-gradient {
+    @include gradientButton()
+}
+
+.color-blue-primary {
+    color: $primary-blue;
+}
+
+.relative-position {
+    position: relative;
+    z-index: 1;
+}

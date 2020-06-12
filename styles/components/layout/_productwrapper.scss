@@ -1,0 +1,30 @@
+.header-product-register {
+    &.bg-curve {
+        background-image: url('../../../public/img/curve.svg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        height: 237px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: space-evenly;
+    }
+
+    .barcode-section {
+        background-color: rgba($black, 0.85);
+        width: 100%;
+        height: 200px;
+        color: $white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .fa-barcode {
+            font-size: 150px;
+        }
+        p{
+            margin: 0;
+        }
+    }
+}

@@ -1,10 +1,15 @@
 @import './variables';
 @import './_mixins.scss';
 
-* {
-    font-family: $font-montserrat;
-}
-
-.btn-gradient {
-    @include gradientButton()
-}
+@import './components/layout/_layout.scss';
+@import './components/layout/_productwrapper.scss';
+@import './components/form';
+@import './components/warning';
+@import './components/numberpicker';
+@import './components/_promotion.scss';
+@import './pages/menu';
+@import './components/_navbar.scss';
+@import './pages/register';
+@import './pages/_sale.scss';
+@import './pages/product';
+@import './pages/_succes.scss';

@@ -1,6 +1,7 @@
 // fonts
 $font-montserrat: 'Montserrat', sans-serif;
 $font-poppins: 'Poppins', sans-serif;
+$font-marvel: 'Marvel', sans-serif;
 // colors
 $white: #ffffff;
 $black: #000000;
@@ -10,9 +11,20 @@ $primary-green:#07CD52;
 $gradient-1: #63C7FF;
 $gradient-2: #00A3FF;
 // color fonts
+$black-light: #595959;
 $gray: #616575;
 $gray-light: #C8CED5;
+$gray-medium-light: #F8F8F8;
+$gray-medium: #575757;
 ///Break points
 $mobile: 375px;
 $tablet: 768px;
 $desktop: 1024px;
+// icons
+$icon-user-login: url('../../public/icon/user-icon.svg');
+$icon-padlock: url('../../public/icon/padlock-icon.svg');
+$icon-error: url('../../public/icon/error-icon.svg');
+$curve: url('../../public/img/curve.svg');
+$icon-sale: url('../../public/icon/sale-icon.svg');
+$icon-scan: url('../../public/icon/scan-icon.svg');
+$icon-code: url('../../public/icon/code-icon.svg');
