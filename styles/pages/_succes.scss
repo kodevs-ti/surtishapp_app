@@ -1,0 +1,36 @@
+.wrapper-success { 
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: rgba($black, 0.82);
+    color: $white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 17px;
+    font-weight: 500;
+
+    .success-buttons {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        .btn-new {
+            @include gradientButton()
+        }
+        .btn-next {
+            @include styleButton(transparent, $white)
+        }
+    }
+    .success-title {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .success-text {
+        width: 60%;
+        text-align: center;
+    }
+
+    
+}

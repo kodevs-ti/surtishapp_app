@@ -1,0 +1,19 @@
+.wrapper-warning {
+    display: flex;
+    justify-content: center;
+    .warning-content {
+        background-color: $gray-medium-light;
+        color: $primary-blue;
+        font-size: 14px;
+        font-weight: 100px;
+        padding: 15px;
+        width: 70%;
+        border-radius: 5px;
+        margin-left: 10px;
+        text-align: justify;
+
+        p{
+            margin: 0;
+        }
+    }
+}

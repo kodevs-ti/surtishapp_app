@@ -3,19 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "@zeit/next-sass": "^1.0.1",
     "bootstrap": "^4.5.0",
+    "formik": "^2.1.4",
     "next": "9.4.4",
+    "next-compose-plugins": "^2.2.0",
+    "next-images": "^1.4.0",
+    "node-sass": "^4.14.1",
     "react": "16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "16.13.1",
-    "sass": "^1.26.8"
+    "react-widgets": "^4.5.0",
+    "react-widgets-simple-number": "^4.1.24",
+    "sass": "^1.26.8",
+    "scandit-sdk": "^5.0.0",
+    "yup": "^0.29.1"
   },
   "devDependencies": {
+    "file-loader": "^6.0.0",
     "standard": "^14.3.4"
   }
 }

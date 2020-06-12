@@ -1,0 +1,62 @@
+.form-login {
+    padding: 0 20px;
+    .inputStyle {
+        @include styleInput();
+    }
+    
+    .label-style {
+        @include styleLabel()
+    }
+
+    .icon-inside-input {
+        position: relative;
+        .icon {
+            position: absolute;
+
+            &.icon-user {
+                background-image: $icon-user-login;
+                background-repeat: no-repeat;
+                width: 15px;
+                height: 15px;
+                top: 17px;
+                left: 14px;
+            }
+            &.icon-padlock{
+                background-image: $icon-padlock;
+                background-repeat: no-repeat;
+                width: 17px;
+                height: 17px;
+                top: 17px;
+                left: 15px;
+            }
+        }
+    }
+
+    .text-alert {
+        color: $primary-red;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+        .icon-error {
+            background-image: $icon-error;
+            background-repeat: no-repeat;
+            width: 17px;
+            height: 17px;
+            margin-right: 5px;
+        }
+        p{
+            margin:0;
+        }
+    }
+
+
+    // error
+    .inputErrorEmail {
+        @include styleInputError()
+    }
+    .inputErrorPassword {
+        @include styleInputError()
+    }
+}
+
