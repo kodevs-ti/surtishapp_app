@@ -35,7 +35,7 @@ export default function Stock () {
             />
           </div>
           <div className='form-group'>
-            <label className='label-style'>Piezas totales</label>
+            <label className='label-style'>Pzs totales</label>
             <input
               type='number'
               name='detail'
@@ -45,8 +45,8 @@ export default function Stock () {
             />
           </div>
         </div>
-        <button className='btn-gradient mt-2 mb-5' onClick={() => Router.push('/register/maxmin')}>
-          Siguiente <i class='fas fa-arrow-right ml-2' />
+        <button className='btn-gradient mt-2 mb-5'>
+          Siguiente <i className='fas fa-arrow-right ml-2' />
         </button>
       </form>
     </ProductWrapper>

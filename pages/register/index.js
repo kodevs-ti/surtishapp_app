@@ -24,11 +24,13 @@ export default class Register extends Component {
       return barcode.data
     }, '')
     this.setState({ barcode })
+    Router.push({
+      pathname: '/register/product',
+      query: { barcode: barcode }
+    })
   }
 
   render () {
-    const { barcode } = this.props
-    const isActive = !!barcode
     return (
       <Container>
         <div className='d-flex flex-column wrapper-register bg-img-intro '>

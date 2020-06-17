@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ScanSettings } from 'scandit-sdk'
 
 import Container from '../../components/layout/container'
@@ -8,14 +8,41 @@ import ProductSale from '../../components/ProductSale'
 import Carousel from '../../components/CarruselPromo.js'
 import ModalTransparent from '../../components/ModalTransparent'
 
+import { getToken } from '../../lib'
+import { getByBarcode } from '../../services/products'
+
 export default function Panel () {
-  const [barcoder, setBarcode] = useState('')
+  const [products, setproducts] = useState([])
+  const [scanedProduct, setScanedProduct] = useState(null)
+
+  const getAProductByBarcode = async (bar) => {
+    const token = getToken()
+    const response = await getByBarcode(bar, token)
+    const responseJSON = await response.json()
+    const { data: { product } } = responseJSON
+    return product
+  }
 
   const handleGetBarcode = (scanResult) => {
     const bar = scanResult.barcodes.reduce((string, barcode) => {
       return barcode.data
     }, '')
-    setBarcode(bar)
+    getAProductByBarcode(bar)
+      .then((product) => {
+        setScanedProduct(product)
+      })
+      .catch(error => console.log(error))
+  }
+
+  useEffect(() => {
+    console.log('UseEffect')
+    if (scanedProduct) setproducts([...products, scanedProduct]) // previnir que no agregue la primera vez que se ejecuta
+  }, [scanedProduct])
+
+  const renderProducts = () => {
+    const newArray = [...new Map(products.map(obj => [JSON.stringify(obj), obj])).values()]
+    console.log(newArray)
+    return newArray.map((product) => (<ProductSale key={product._id} product={product} />))
   }
 
   return (
@@ -46,17 +73,13 @@ export default function Panel () {
 
           <div className='list-products mt-3'>
             <ul className='list-group list-group-flush scroll'>
-              <ProductSale />
-              <ProductSale />
-              <ProductSale />
-              <ProductSale />
-              <ProductSale />
-              <ProductSale />
-              <ProductSale />
-              <ProductSale />
-              <ProductSale />
-              <ProductSale />
-              <ProductSale />
+              {
+                products ? (
+                  renderProducts()
+                ) : (
+                  <p>No hay Products</p>
+                )
+              }
             </ul>
             <hr className='color-line' />
             <div className='info-sale-pay'>
@@ -67,7 +90,7 @@ export default function Panel () {
           </div>
         </main>
         {
-          false ? null : (
+          true ? null : (
             <ModalTransparent />
           )
         }
