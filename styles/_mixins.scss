@@ -14,14 +14,14 @@
     }
 }
 
-@mixin styleButton($bg-color, $color) {
+@mixin styleButton($bg-color, $border-color, $color) {
     background-color: $bg-color;
     width: 100%;
     height: 50px;
     border-radius: 50px;
     text-transform: uppercase;
     text-align: center;
-    border: 1px solid $color;
+    border: 1px solid $border-color;
     color: $color;
     font-weight: 600;
     font-size: 12px;
@@ -37,16 +37,53 @@
     font-weight: 200;
     background-color: $white;
     border: none;
-    margin-bottom: 25px;
+    // margin-bottom: 25px;
     text-indent: 30px;
     width: 100%;
     height: 50px;
-    box-shadow: 2px 3px 11px 0px rgba(0,0,0,0.08);
+    border: 1px solid rgba($gray, .05);
+    box-shadow: 2px 3px 11px 0px rgba(0,0,0,0.025);
 
     &:focus {
         outline:0px;
         outline-width: 0 !important;
-        box-shadow: 2px 3px 11px 0px rgba(0,0,0,0.08);
+        box-shadow: 2px 3px 11px 0px rgba(0,0,0,0.025);
+        text-indent: 30px
+    }
+    &::placeholder {
+        color: $gray-light;
+        font-size: 17px;
+        font-weight: normal;
+        text-indent: 30px;
+    }
+
+    &[type="date"] {
+        text-indent: 13px;
+    }
+
+    &[type="number"] {
+        text-indent: 15px;
+        
+        &::placeholder {
+            text-indent: 15px;
+        }
+    }
+}
+
+@mixin InputOnlyRead () {
+    border-radius: 50px;
+    font-size: 15px;
+    color: #616575;
+    font-weight: 200;
+    background-color: $gray-medium-light;
+    border: none;
+    text-indent: 30px;
+    width: 100%;
+    height: 50px;
+    &:focus {
+        outline:0px;
+        outline-width: 0 !important;
+        box-shadow: 2px 3px 11px 0px rgba(0,0,0,0.025);
         text-indent: 30px
     }
     &::placeholder {
@@ -110,7 +147,7 @@
     font-weight: 200;
     background-color: $white;
     border: 1px solid $primary-red;
-    margin-bottom: 25px;
+    margin-bottom: 5px;
     text-indent: 30px;
     width: 100%;
     height: 50px;
@@ -125,8 +162,60 @@
     &::placeholder {
         color: $primary-red;
         font-size: 17px;
-        font-weight: normal;
+        font-weight: 200;
         text-indent: 30px
+    }
+
+    &[type="date"] {
+        color: $primary-red;
+    }
+}
+
+@mixin styleSelectError(){
+    border-radius: 50px;
+    font-size: 15px;
+    color: $gray;
+    font-weight: 200;
+    background-color: $white;
+    border: 1px solid $primary-red;
+    margin-bottom: 5px;
+    text-indent: 30px;
+    width: 100%;
+    height: 50px;
+    box-shadow: 2px 3px 11px 0px rgba(0,0,0,0.08);
+
+    &:focus {
+        outline:0px;
+        outline-width: 0 !important;
+        box-shadow: 2px 3px 11px 0px rgba(0,0,0,0.08);
+        text-indent: 30px
+    }
+    &::placeholder {
+        color: $primary-red;
+        font-size: 17px;
+        font-weight: 200;
+        text-indent: 30px
+    }
+
+    option {
+        &.option:first-child{
+            color: $primary-red;
+        }
+    }
+}
+
+@mixin textAlertInput() {
+    color: $red-light;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 12px;
+    padding: 0 0 0 17px;
+    p{
+        margin:0;
     }
 }
 

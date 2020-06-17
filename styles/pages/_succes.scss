@@ -19,7 +19,10 @@
             @include gradientButton()
         }
         .btn-next {
-            @include styleButton(transparent, $white)
+            @include styleButton(transparent,$white, $white)
+        }
+        .btn-logout {
+            @include styleButton($primary-red,$primary-red, $white)
         }
     }
     .success-title {

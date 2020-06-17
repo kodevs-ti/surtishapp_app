@@ -37,7 +37,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 50px;
+        margin-top: 20px;
         .icon-error {
             background-image: $icon-error;
             background-repeat: no-repeat;
@@ -45,6 +45,21 @@
             height: 17px;
             margin-right: 5px;
         }
+        p{
+            margin:0;
+        }
+    }
+
+    .text-alert-input {
+        color: $red-light;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 12px;
+        padding: 0 0 0 17px;
         p{
             margin:0;
         }

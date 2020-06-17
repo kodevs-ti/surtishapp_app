@@ -89,7 +89,7 @@
         }
 
         .btn-sale-general {
-            @include styleButton(transparent, $primary-blue);
+            @include styleButton(transparent, $primary-blue, $primary-blue);
         }
 
         .label-style {

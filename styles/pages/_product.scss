@@ -7,11 +7,36 @@
     .input-style {
         @include styleInput();
     }
+    .input-style-read {
+        @include InputOnlyRead();
+    }
     .label-style {
         @include styleLabel()
     }
     .select-style {
         @include styleSelect();
+         option {
+            font-family: 'Font Awesome 5 Free', 'sans-serif';
+            &.piece {
+                background-image: $icon-piece;
+                background-position: center;
+            }
+         }
+    }
+
+    .inputErrorName,
+    .inputErrorDateExpiry,
+    .inputErrorQuantityMajor,
+    .inputErrorQuantityMedia,
+    .inputErrorStockMaxMajor,
+    .inputErrorStockMinMajor {
+        @include styleInputError();
+    }
+    .inputErrorMeasure{
+        @include styleSelectError();
+    }
+    .text-alert-input {
+        @include textAlertInput();
     }
     .title-style {
         @include styleTitle();
@@ -28,7 +53,7 @@
     .wrapper-profit {
         background-color:$gray-medium-light;
         padding: 15px;
-        color: $gray-light;
+        color: $gray-medium;
         font-size: 14px;
         font-weight: 300;
         p{
@@ -36,7 +61,26 @@
 
             span {
                 font-weight: 500;
+                color: $gray;
             }
+        }
+    }
+
+    .text-alert {
+        color: $primary-red;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .icon-error {
+            background-image: $icon-error;
+            background-repeat: no-repeat;
+            width: 17px;
+            height: 17px;
+            margin-right: 5px;
+        }
+        p{
+            margin:0;
         }
     }
 }
