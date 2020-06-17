@@ -1,7 +1,7 @@
-import { URL_BASE, URL_BASE_LOCAL } from './config'
+import { URL_BASE } from './config'
 
 function create (productoData, token) {
-  const URL = `${URL_BASE_LOCAL}products`
+  const URL = `${URL_BASE}products`
   const options = {
     method: 'POST',
     body: JSON.stringify(productoData),
@@ -15,7 +15,7 @@ function create (productoData, token) {
 }
 
 function getById (id, token) {
-  const URL = `${URL_BASE_LOCAL}products/${id}`
+  const URL = `${URL_BASE}products/${id}`
   const options = {
     method: 'GET',
     headers: {
@@ -28,7 +28,7 @@ function getById (id, token) {
 }
 
 function updateById (id, newData, token) {
-  const URL = `${URL_BASE_LOCAL}products/${id}`
+  const URL = `${URL_BASE}products/${id}`
   const options = {
     method: 'PATCH',
     body: JSON.stringify(newData),
@@ -42,7 +42,7 @@ function updateById (id, newData, token) {
 }
 
 function getByBarcode (barcode, token) {
-  const URL = `${URL_BASE_LOCAL}products/${barcode}/barcode`
+  const URL = `${URL_BASE}products/${barcode}/barcode`
   const options = {
     method: 'GET',
     headers: {
