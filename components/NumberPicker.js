@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-export default function NumberPicker () {
-  const [value, setValue] = useState(1)
+export default function NumberPicker ({ initialValue }) {
+  const [value, setValue] = useState(initialValue)
+
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
 
   const handleDecrementValue = () => {
     if (value === 1) {

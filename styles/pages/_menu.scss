@@ -80,6 +80,12 @@
                 background-position: center;
                 background-size: cover;
             }
+            &.devolution-icon {
+                background-image: $icon-devolution;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+            }
         }
     }
 }

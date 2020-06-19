@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
+import dynamic from 'next/dynamic'
 import Router from 'next/router'
-import { ScanSettings } from 'scandit-sdk'
 
-import BarcodePicker from '../../components/Scanner'
+// import BarcodePicker from '../../components/Scanner'
 import Container from '../../components/layout/container'
 import Navbar from '../../components/Navbar'
 
 import barcodeIcon from '../../public/img/barcode.svg'
 import notBarcode from '../../public/img/notBarcode.svg'
+
+const BarcodePicker = dynamic(() => import('../../components/Scanner'), { ssr: false })
 
 export default class Register extends Component {
   constructor (props) {
@@ -39,12 +41,6 @@ export default class Register extends Component {
             <BarcodePicker
               playSoundOnScan
               vibrateOnScan
-              scanSettings={
-                new ScanSettings({
-                  enabledSymbologies: ['qr', 'ean8', 'ean13', 'upca', 'upce', 'code128', 'code39', 'code93', 'itf'],
-                  codeDuplicateFilter: 1000
-                })
-              }
               onScan={this.handleGetBarcode}
               onError={error => {
                 console.error(error.message)
@@ -72,7 +68,7 @@ export default class Register extends Component {
               </div>
             </div>
             <div className='mt-4 mb-4'>
-              <button className='btn-register' onClick={() => Router.push('/register/product')}>
+              <button className='btn-register' onClick={() => Router.push('/sale')}>
                     Continuar Registro <i className='fas fa-arrow-right ml-2' />
               </button>
             </div>

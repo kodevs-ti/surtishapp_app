@@ -12,6 +12,7 @@
     }
 
     .barcode-section {
+        position: relative;
         background-color: rgba($black, 0.85);
         width: 100%;
         height: 200px;
@@ -25,6 +26,9 @@
         }
         p{
             margin: 0;
+        }
+        .wrapper-scanner {
+            height: 35%;
         }
     }
 }

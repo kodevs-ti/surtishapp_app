@@ -1,4 +1,4 @@
-import Container from '../components/Layout/container'
+import Container from '../components/layout/container'
 import Form from '../components/Form'
 
 import img from '../public/img/welcome-intro.svg'

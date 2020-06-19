@@ -147,20 +147,35 @@
         .detail-product {
             p{
                 margin: 0;
+                margin-right: 2px;
             }
             .product-name {
-               font-size:17px;
+               font-size:15px;
                 color: $gray-medium;
                 font-weight: normal;
+                width:60px;
             }
             .product-price-meassure {
                 color: $primary-blue;
                 font-family: $font-marvel;
                 font-size: 15px;
                 span {
-                    font-weight: 500;
+                    font-weight: 400;
                     
                 }
+            }
+        }
+    }
+
+    .price-total-product {
+        color: $primary-blue;
+        font-family: $font-marvel;
+        font-size: 15px;
+        span {
+            font-weight: 400;
+            
+            &.multi-icon {
+                font-weight: 300;
             }
         }
     }
