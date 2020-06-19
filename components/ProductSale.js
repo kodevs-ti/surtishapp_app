@@ -4,35 +4,21 @@ import NumberPicker from './NumberPicker.js'
 import removeIcon from '../public/icon/remove-icon.svg'
 
 export default function ProductSale ({ product }) {
-  const { _id, image, name, detail, priceSuggestedByUnit, unitMeasureMajor } = product
-  const [isPressed, setIsPressed] = useState(false)
-  let nameClassPicker = ''
-  let nameClassIcon = 'd-none'
-  const handleClickProduct = () => {
-    console.log('clicked product')
-    setIsPressed(!isPressed)
-    if (isPressed) {
-      nameClassPicker = ''
-      nameClassIcon = 'd-none'
-      return
-    }
-    nameClassPicker = 'd-none'
-    nameClassIcon = ''
-  }
+  const { image, name, detail, priceSuggestedByUnit, unitMeasureMajor, priceTotal, quantityProduct } = product
 
   return (
-    <li className='list-group-item' onClick={handleClickProduct}>
+    <li className='list-group-item'>
       <div className='item-product'>
         <div className='d-flex align-items-center'>
           {
             image ? (
               <img src={image} className='rounded-circle img-fluid img-product' />
             ) : (
-              <i className='fas fa-eye-slash rounded-circle img-fluid img-product' />
+              <i className='fas fa-eye-slash rounded-circle img-fluid img-product d-flex align-items-center justify-content-center' />
             )
           }
-          <div className='detail-product ml-3'>
-            <p className='product-name'>{`${name} ${detail}`}</p>
+          <div className='detail-product'>
+            <p className='product-name'>{name} <br /> {detail}</p>
             {
               unitMeasureMajor === 'caja' ? (
                 <p className='product-price-meassure'><span>${priceSuggestedByUnit}</span> / 1 pz</p>
@@ -40,15 +26,13 @@ export default function ProductSale ({ product }) {
                 <p className='product-price-meassure'><span>${priceSuggestedByUnit}</span> / 1 kg</p>
               )
             }
-
           </div>
         </div>
-        <div className={nameClassPicker}>
-          <div className='d-flex align-items-center'>
-            <NumberPicker /> {unitMeasureMajor === 'caja' ? null : (<span>gr</span>)}
-          </div>
+        <div className='d-flex align-items-center'>
+          <NumberPicker initialValue={quantityProduct} /> {unitMeasureMajor === 'caja' ? null : (<span>gr</span>)}
         </div>
-        <img src={removeIcon} className={nameClassIcon} />
+        <span className='price-total-product'><span className='multi-icon'>&#x2613;</span>  &#x2060; &#x2060; ${priceTotal}</span>
+        <img src={removeIcon} className='size-img' />
       </div>
     </li>
   )

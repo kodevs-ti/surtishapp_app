@@ -1,0 +1,54 @@
+.bg-gray {
+    background-color: $gray-medium-light;
+}
+
+.size-img {
+    width: 40px;
+}
+
+.scanner {
+    width: 100%;
+    position: relative;
+    height: 50%;
+    .scandit {
+        &.scandit-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            top: 50px;
+        }
+    }
+}
+
+.form-pay {
+    .text-alert-input {
+        @include textAlertInput();
+    }
+
+    .inputErrorMoneyReceived { 
+        @include styleInputError();
+    }
+
+    .inputErrorMoneyReceived {
+        @include styleInputError();
+    }
+}
+
+.btn-finish {
+    @include gradientButton()
+}
+
+.change-final-sale {
+    font-family: Marvel;
+    font-weight: 200;
+    font-size: 35px;
+    line-height: 42px;
+    color:$gray;
+}
+
+
+

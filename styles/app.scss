@@ -1,6 +1,8 @@
 @import './variables';
 @import './_mixins.scss';
 
+@import './_common.scss';
+@import './components/modal/modalPay';
 @import './components/layout/_layout.scss';
 @import './components/layout/_productwrapper.scss';
 @import './components/form';

@@ -3,7 +3,7 @@ import Router from 'next/router'
 import ProductWrapper from '../../components/layout/productWrapper'
 import success from '../../public/icon/success-icon.svg'
 
-export default function MaxMin () {
+export default function Success () {
   return (
     <ProductWrapper>
       <div className='wrapper-success vh-100'>

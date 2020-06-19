@@ -1,0 +1,52 @@
+.card-info {
+    .resume-pay {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .resume-client-info {
+            display: flex;
+            flex-direction: column;
+            width: 70%;
+            justify-content: space-around;
+            align-items: center;
+             p{
+                 margin: 0;
+             }
+             .resume-client-label {
+                 @include styleLabel();
+             }
+             .resume-client-value {
+                font-weight: 400;
+                font-size: 14px;
+                color: $gray;
+             }
+        }
+    }
+
+    .form-pay {
+        .label-style {
+            @include styleLabel()
+        }
+        .icon-inside-input {
+            position: relative;
+            .icon-money {
+                background-image: $icon-money;
+                background-repeat: no-repeat;
+                position: absolute;
+                width: 15px;
+                height: 15px;
+                top: 17px;
+                left: 14px;
+            }
+            .input-style {
+                @include styleInput()
+            }
+        }
+        .btn-pay {
+            @include gradientButton()
+        }
+        .btn-pay-sale {
+            @include styleButton($white, $primary-blue, $primary-blue)
+        }
+    }
+}

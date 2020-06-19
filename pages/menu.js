@@ -1,7 +1,7 @@
 import react, { useState, useEffect } from 'react'
 import Router from 'next/router'
 
-import Container from '../components/Layout/container'
+import Container from '../components/layout/container'
 import Navbar from '../components/Navbar'
 
 import profile from '../public/img/profile.svg'
@@ -50,9 +50,18 @@ export default function Menu () {
             <div className='icon sale-icon' />
               Vender
           </button>
-          <button onClick={() => Router.push('/register')} className='btn-menu register'>
-            <span className='icon scan-icon' />
+          {
+            role === 'seller' ? null : (
+              <button onClick={() => Router.push('/register')} className='btn-menu register'>
+                <span className='icon scan-icon' />
               Registrar producto
+              </button>
+            )
+          }
+
+          <button onClick={() => Router.push('/menu')} className='btn-menu register'>
+            <span className='icon devolution-icon' />
+              Devoluciones
           </button>
         </div>
       </div>
