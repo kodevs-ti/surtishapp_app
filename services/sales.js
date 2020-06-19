@@ -1,7 +1,7 @@
-import { URL_BASE_LOCAL } from './config'
+import { URL_BASE } from './config'
 
 function create (saleData, token) {
-  const URL = `${URL_BASE_LOCAL}sales`
+  const URL = `${URL_BASE}sales`
   const options = {
     method: 'POST',
     body: JSON.stringify(saleData),
