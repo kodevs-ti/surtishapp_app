@@ -70,9 +70,9 @@ class BarcodePicker extends Component {
   componentDidUpdate(prevProps) {
     // These are just some examples of how to react to some possible property changes
 
-    // if (JSON.stringify(prevProps.scanSettings) !== JSON.stringify(this.props.scanSettings)) {
-    //   this.barcodePicker.applyScanSettings(this.props.scanSettings);
-    // }
+    if (JSON.stringify(prevProps.scanSettings) !== JSON.stringify(this.props.scanSettings)) {
+      this.barcodePicker.applyScanSettings(this.props.scanSettings);
+    }
 
     if (prevProps.visible !== this.props.visible) {
       this.barcodePicker.setVisible(this.props.visible);
