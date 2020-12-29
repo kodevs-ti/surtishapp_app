@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import dynamic from 'next/dynamic'
 import Router from 'next/router'
 
@@ -12,16 +12,13 @@ import notBarcode from '../../public/img/notBarcode.svg'
 const BarcodePicker = dynamic(() => import('../../components/Scanner'), { ssr: false })
 
 export default function Register () {
-  const [barcode, setBarcode] = useState('')
-
   const handleGetBarcode = (scanResult) => {
-    const barcodeNew = scanResult.barcodes.reduce((string, barcode) => {
+    const barcode = scanResult.barcodes.reduce((string, barcode) => {
       return barcode.data
     }, '')
-    setBarcode(barcodeNew)
     Router.push({
       pathname: '/register/product',
-      query: { barcode: barcode }
+      query: { barcode }
     })
   }
 
