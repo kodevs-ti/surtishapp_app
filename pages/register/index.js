@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
 import Router from 'next/router'
 
@@ -11,21 +11,15 @@ import notBarcode from '../../public/img/notBarcode.svg'
 
 const BarcodePicker = dynamic(() => import('../../components/Scanner'), { ssr: false })
 
-export default class Register extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      barcode: ''
-    }
-    this.handleGetBarcode = this.handleGetBarcode.bind(this)
-  }
+export default function Register() {
+  const [barcode, setBarcode] = useState('')
 
-  handleGetBarcode (scanResult) {
-    let { barcode } = this.state
-    barcode = scanResult.barcodes.reduce((string, barcode) => {
+  const handleGetBarcode = (scanResult) => {
+    let barcodeNew 
+    barcodeNew = scanResult.barcodes.reduce((string, barcode) => {
       return barcode.data
     }, '')
-    this.setState({ barcode })
+    setBarcode(barcodeNew)
     Router.push({
       pathname: '/register/product',
       query: { barcode: barcode }
@@ -41,7 +35,7 @@ export default class Register extends Component {
             <BarcodePicker
               playSoundOnScan
               vibrateOnScan
-              onScan={this.handleGetBarcode}
+              onScan={handleGetBarcode}
               onError={error => {
                 console.error(error.message)
               }}
@@ -68,7 +62,7 @@ export default class Register extends Component {
               </div>
             </div>
             <div className='mt-4 mb-4'>
-              <button className='btn-register' onClick={() => Router.push('/sale')}>
+              <button className='btn-register' onClick={() => Router.push('/register/product')}>
                     Continuar Registro <i className='fas fa-arrow-right ml-2' />
               </button>
             </div>
