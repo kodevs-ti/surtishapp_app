@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@hookform/resolvers": "^1.2.0",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "bootstrap": "^4.5.0",
@@ -20,6 +21,7 @@
     "react": "16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "16.13.1",
+    "react-hook-form": "^6.13.1",
     "react-spinners": "^0.8.3",
     "react-widgets": "^4.5.0",
     "react-widgets-simple-number": "^4.1.24",

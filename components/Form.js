@@ -1,102 +1,95 @@
 import React, { useState } from 'react'
 import Router from 'next/router'
-import { useFormik } from 'formik'
+import { useForm } from 'react-hook-form'
 import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import BeatLoader from 'react-spinners/BeatLoader'
 import { signUp } from '../services/users'
 import { setToken } from '../lib'
 
+const schema = Yup.object().shape({
+  email: Yup.string().email('Email No Valido').required('Campo Obligatorio'),
+  password: Yup.string().required('Campo Obligatorio')
+})
+
 export default function Form () {
   const [errorMessage, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  // validation
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: ''
-    },
-    validationSchema: Yup.object({
-      email: Yup.string().email('Email No Valido').required('Campo Obligatorio'),
-      password: Yup.string().required('Campo Obligatorio')
-    }),
-    onSubmit: async value => {
-      setError('')
-      setIsLoading(true)
-      const response = await signUp(value)
-      const responseJSON = await response.json()
-      const { success, data } = responseJSON
-      setIsLoading(false)
-      if (success) {
-        setToken(data.token)
-        Router.push('/menu')
-        return
-      }
-      setError('Credenciales Invalidas')
-    }
+  const { register, handleSubmit, errors } = useForm({
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(schema)
   })
 
-  const classNameEmail = formik.touched.email && formik.errors.email ? 'inputErrorEmail' : null
-  const classNamePassword = formik.touched.password && formik.errors.password ? 'inputErrorPassword' : null
+  const onSubmit = async (dataToSend) => {
+    setError('')
+    setIsLoading(true)
+    const response = await signUp(dataToSend)
+    const responseJSON = await response.json()
+    const {
+      success,
+      data
+    } = responseJSON
+    setIsLoading(false)
+    if (success) {
+      setToken(data.token)
+      Router.push('/menu')
+      return
+    }
+    setError('Credenciales Invalidas')
+  }
+  const classNameEmail = errors.email ? 'inputErrorEmail' : null
+  const classNamePassword = errors.password ? 'inputErrorPassword' : null
   return (
     <>
-      <form className='form-login' onSubmit={formik.handleSubmit}>
+      <form
+        className='form-login'
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className='form-group'>
-          <label className='label-style'>Email</label>
+          <label className='label-style'> Email
+          </label>
           <div className='icon-inside-input'>
             <span className='icon icon-user' />
             <input
               type='text'
               name='email'
+              ref={register}
               className={`form-control inputStyle ${classNameEmail}`}
               placeholder='john@ejemplo.com'
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
             />
           </div>
-          {
-            formik.touched.email && formik.errors.email ? (
-              <div className='text-alert-input'>
-                <p>{formik.errors.email}</p>
-              </div>
-            ) : null
-          }
+          <div className='text-alert-input'>
+            <p> {errors.email?.message}</p>
+          </div>
         </div>
-        <div className='form-group'>
-          <label className='label-style'>Contraseña</label>
-          <div className='icon-inside-input'>
-            <span className='icon icon-padlock' />
+        <div className='form-group'> <label className='label-style'> Contraseña  </label>
+          <div className='icon-inside-input'> <span className='icon icon-padlock' />
             <input
               type='password'
               name='password'
+              ref={register}
               className={`form-control inputStyle ${classNamePassword}`}
               placeholder='-----'
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
             />
           </div>
-          {
-            formik.touched.password && formik.errors.password ? (
-              <div className='text-alert-input'>
-                <p>{formik.errors.password}</p>
-              </div>
-            ) : null
-          }
-        </div>
+          <div className='text-alert-input'>
+            <p> {errors.password?.message}</p>
+          </div>
+        </div> 
         {
-          formik.errors.email && formik.errors.password ? (
+          errors.password ? (
             <div className='text-alert'>
               <span className='icon-error' />
-              <p>Los campos son obligatorios</p>
+              <p> Los campos son obligatorios</p>
             </div>
           ) : errorMessage ? (
             <div className='text-alert'>
               <span className='icon-error' />
-              <p>{errorMessage}</p>
+              <p> {errorMessage}</p>
             </div>
           ) : null
-        }
+        } 
         {
           <div className='mt-4 w-100 d-flex justify-content-center'>
             <BeatLoader
@@ -106,7 +99,11 @@ export default function Form () {
             />
           </div>
         }
-        <button type='submit' className='btn-gradient mt-4'>Iniciar Sesión</button>
+        <button
+          type='submit'
+          className='btn-gradient mt-4'
+        > Iniciar Sesión
+        </button>
       </form>
     </>
   )
