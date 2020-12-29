@@ -11,12 +11,11 @@ import notBarcode from '../../public/img/notBarcode.svg'
 
 const BarcodePicker = dynamic(() => import('../../components/Scanner'), { ssr: false })
 
-export default function Register() {
+export default function Register () {
   const [barcode, setBarcode] = useState('')
 
   const handleGetBarcode = (scanResult) => {
-    let barcodeNew 
-    barcodeNew = scanResult.barcodes.reduce((string, barcode) => {
+    const barcodeNew = scanResult.barcodes.reduce((string, barcode) => {
       return barcode.data
     }, '')
     setBarcode(barcodeNew)
@@ -26,51 +25,49 @@ export default function Register() {
     })
   }
 
-  render () {
-    return (
-      <Container>
-        <div className='d-flex flex-column wrapper-register bg-img-intro '>
-          <Navbar />
-          <div className='bg-curve'>
-            <BarcodePicker
-              playSoundOnScan
-              vibrateOnScan
-              onScan={handleGetBarcode}
-              onError={error => {
-                console.error(error.message)
-              }}
-            />
-          </div>
-
-          <div className='card-info-scan child-intro'>
-            <div className='text-center color-blue-primary'>
-              <i className='fas fa-angle-down' />
-            </div>
-            <h3>Registrar Producto</h3>
-            <div className='info-have-barcode'>
-              <p className='info-title'>¿El producto que deseas registrar <span>tiene</span> un código de barras?</p>
-              <div className='d-flex justify-content-around align-items-center'>
-                <img src={barcodeIcon} alt='img' />
-                <p className='info-description'>Entonces, apunta la cámara hacia el codigo de barras</p>
-              </div>
-            </div>
-            <div className='info-have-notbarcode mt-4'>
-              <p className='info-title'>Si el producto <span>no tiene</span> un código de barras...</p>
-              <div className='d-flex justify-content-around align-items-center'>
-                <img src={notBarcode} alt='img' />
-                <p className='info-description'>No te Preocupes!! Continua con el registro</p>
-              </div>
-            </div>
-            <div className='mt-4 mb-4'>
-              <button className='btn-register' onClick={() => Router.push('/register/product')}>
-                    Continuar Registro <i className='fas fa-arrow-right ml-2' />
-              </button>
-            </div>
-          </div>
-
-          <p id='scandit-barcode-result' className='child-intro text-white' />
+  return (
+    <Container>
+      <div className='d-flex flex-column wrapper-register bg-img-intro '>
+        <Navbar />
+        <div className='bg-curve'>
+          <BarcodePicker
+            playSoundOnScan
+            vibrateOnScan
+            onScan={handleGetBarcode}
+            onError={error => {
+              console.error(error.message)
+            }}
+          />
         </div>
-      </Container>
-    )
-  }
+
+        <div className='card-info-scan child-intro'>
+          <div className='text-center color-blue-primary'>
+            <i className='fas fa-angle-down' />
+          </div>
+          <h3>Registrar Producto</h3>
+          <div className='info-have-barcode'>
+            <p className='info-title'>¿El producto que deseas registrar <span>tiene</span> un código de barras?</p>
+            <div className='d-flex justify-content-around align-items-center'>
+              <img src={barcodeIcon} alt='img' />
+              <p className='info-description'>Entonces, apunta la cámara hacia el codigo de barras</p>
+            </div>
+          </div>
+          <div className='info-have-notbarcode mt-4'>
+            <p className='info-title'>Si el producto <span>no tiene</span> un código de barras...</p>
+            <div className='d-flex justify-content-around align-items-center'>
+              <img src={notBarcode} alt='img' />
+              <p className='info-description'>No te Preocupes!! Continua con el registro</p>
+            </div>
+          </div>
+          <div className='mt-4 mb-4'>
+            <button className='btn-register' onClick={() => Router.push('/register/product')}>
+                    Continuar Registro <i className='fas fa-arrow-right ml-2' />
+            </button>
+          </div>
+        </div>
+
+        <p id='scandit-barcode-result' className='child-intro text-white' />
+      </div>
+    </Container>
+  )
 }
