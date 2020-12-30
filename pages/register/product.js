@@ -36,7 +36,7 @@ export default function Product () {
   const onSubmit = async (dataToSend) => {
     setError('')
     const token = getToken()
-    const response = await create(dataToSend, token)
+    const response = await create({...dataToSend, barcode}, token)
     const responseJSON = await response.json()
     const { success, data } = responseJSON
     if (success) {
@@ -49,7 +49,7 @@ export default function Product () {
       })
       return
     }
-    setError('Ya existe esté código de Barras')
+    setError('Ya existe esté producto')
   }
 
   const classNameName = errors.name ? 'inputErrorName' : null
@@ -212,7 +212,7 @@ export default function Product () {
           </div>
         </div>
         {
-          errorMessage && (
+          errorMessage ? (
             <>
             <div className='text-alert mb-4'>
               <div>
@@ -224,11 +224,13 @@ export default function Product () {
               <i className='fas fa-arrow-left mr-2' /> Escanear Otro
             </button>
             </>
+          ): (
+            <button type='submit' className='btn-gradient mt-2 mb-5'>
+              Siguiente <i className='fas fa-arrow-right ml-2' />
+            </button>
           )
         }
-        <button type='submit' className='btn-gradient mt-2 mb-5'>
-          Siguiente <i className='fas fa-arrow-right ml-2' />
-        </button>
+        
       </form>
     </ProductWrapper>
   )
