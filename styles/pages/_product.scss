@@ -30,7 +30,9 @@
     .inputErrorQuantityMajor,
     .inputErrorQuantityMedia,
     .inputErrorStockMaxMajor,
-    .inputErrorStockMinMajor {
+    .inputErrorStockMinMajor,
+    .inputErrorPricePurchasedByUnit,
+    .inputErrorPercentageOfProfit {
         @include styleInputError();
     }
     .inputErrorMeasure{
