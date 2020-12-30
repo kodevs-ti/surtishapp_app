@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Router, { useRouter } from 'next/router'
-import { useFormik } from 'formik'
+import { useForm } from 'react-hook-form'
 import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import ProductWrapper from '../../components/layout/productWrapper'
 import Warning from '../../components/Warning'
 
@@ -12,58 +13,54 @@ import iconPiece from '../../public/icon/piece-icon.svg'
 import iconBulto from '../../public/icon/bulto-icon.svg'
 import iconBoxStock from '../../public/icon/box-icon.svg'
 
+const schema = Yup.object().shape({
+  name: Yup.string().required('Requerido'),
+  unitMeasureMajor: Yup.string().required('Requerido').min(1, 'Invalido'),
+  quantityByMeasureMajor: Yup.number('invalido').min(1, 'Requerido').positive('Invalido').required('Requerido').typeError('Invalido'),
+  quantityByMeasureMedia: Yup.number('invalido').min(1, 'Requerido').positive('Invalido').required('Requerido').typeError('Invalido'),
+})
+
 export default function Product () {
   const [errorMessage, setError] = useState('')
   const router = useRouter()
   const { barcode } = router.query
-
-  const formik = useFormik({
-    initialValues: {
-      barcode,
-      name: '',
-      detail: '',
-      dateOfExpiry: '',
-      unitMeasureMajor: '',
-      quantityByMeasureMajor: 0,
-      quantityByMeasureMedia: 0
-    },
-    validationSchema: Yup.object({
-      barcode: Yup.string().required('Requerido'),
-      name: Yup.string().required('Requerido'),
-      unitMeasureMajor: Yup.string().required('Requerido'),
-      quantityByMeasureMajor: Yup.number().min(1, 'Requerido').positive('Invalido').required('Requerido'),
-      quantityByMeasureMedia: Yup.number().min(1, 'Requerido').positive('Invalido').required('Requerido'),
-      dateOfExpiry: Yup.date().required('Requerido')
-    }),
-    onSubmit: async values => {
-      setError('')
-      const token = getToken()
-      const response = await create(values, token)
-      const responseJSON = await response.json()
-      const { success, data } = responseJSON
-      if (success) {
-        Router.push({
-          pathname: '/register/maxmin',
-          query: {
-            barcode,
-            id: data.product._id
-          }
-        })
-        return
-      }
-      setError('Ya existe esté código de Barras')
-    }
+  const { register, handleSubmit, errors, getValues, watch } = useForm({
+    mode: 'onBlur',
+    reValidateMode: 'onSubmit',
+    resolver: yupResolver(schema)
   })
 
-  const classNameName = formik.touched.name && formik.errors.name ? 'inputErrorName' : null
-  const classNameMeasure = formik.touched.unitMeasureMajor && formik.errors.unitMeasureMajor ? 'inputErrorMeasure' : null
-  const classNameDateExpiry = formik.touched.dateOfExpiry && formik.errors.dateOfExpiry ? 'inputErrorDateExpiry' : null
-  const classNameQuantityMajor = formik.touched.quantityByMeasureMajor && formik.errors.quantityByMeasureMajor ? 'inputErrorQuantityMajor' : null
-  const classNameQuantityMedia = formik.touched.quantityByMeasureMedia && formik.errors.quantityByMeasureMedia ? 'inputErrorQuantityMedia' : null
+  const watchSelectMeasure = watch('unitMeasureMajor')
+  const watchQuantities = watch(['quantityByMeasureMajor', 'quantityByMeasureMedia', 'quantityByMeasureMinor'])
+  
+  const onSubmit = async (dataToSend) => {
+    setError('')
+    const token = getToken()
+    const response = await create(dataToSend, token)
+    const responseJSON = await response.json()
+    const { success, data } = responseJSON
+    if (success) {
+      Router.push({
+        pathname: '/register/maxmin',
+        query: {
+          barcode,
+          id: data.product._id
+        }
+      })
+      return
+    }
+    setError('Ya existe esté código de Barras')
+  }
+
+  const classNameName = errors.name ? 'inputErrorName' : null
+  const classNameMeasure = errors.unitMeasureMajor ? 'inputErrorMeasure' : null
+  const classNameDateExpiry = errors.dateOfExpiry ? 'inputErrorDateExpiry' : null
+  const classNameQuantityMajor = errors.quantityByMeasureMajor ? 'inputErrorQuantityMajor' : null
+  const classNameQuantityMedia = errors.quantityByMeasureMedia ? 'inputErrorQuantityMedia' : null
 
   return (
     <ProductWrapper barcode={barcode}>
-      <form className='form-product' onSubmit={formik.handleSubmit}>
+      <form className='form-product' onSubmit={handleSubmit(onSubmit)}>
         <h3 className='title-style mt-3'>Nuevo Producto</h3>
         <hr />
         <div className='form-group'>
@@ -73,17 +70,11 @@ export default function Product () {
             name='name'
             className={`form-control input-style ${classNameName}`}
             placeholder='Café'
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            ref={register}
           />
-          {
-            formik.touched.name && formik.errors.name ? (
-              <div className='text-alert-input'>
-                <p>{formik.errors.name}</p>
-              </div>
-            ) : null
-          }
+          <div className='text-alert-input'>
+            <p>{errors.name?.message}</p>
+          </div>
         </div>
         <div className='form-group'>
           <label className='label-style'>Detalle del Producto</label>
@@ -92,8 +83,7 @@ export default function Product () {
             name='detail'
             className='form-control input-style'
             placeholder='Café'
-            value={formik.values.detail}
-            onChange={formik.handleChange}
+            ref={register}
           />
         </div>
         <div className='form-group'>
@@ -102,17 +92,8 @@ export default function Product () {
             type='date'
             className={`form-control input-style ${classNameDateExpiry}`}
             name='dateOfExpiry'
-            value={formik.values.dateOfExpiry}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            ref={register}
           />
-          {
-            formik.touched.dateOfExpiry && formik.errors.dateOfExpiry ? (
-              <div className='text-alert-input'>
-                <p>{formik.errors.dateOfExpiry}</p>
-              </div>
-            ) : null
-          }
         </div>
         <div className='form-group'>
           <label className='label-style mb-3'>Unidad de Medida</label>
@@ -120,53 +101,46 @@ export default function Product () {
           <select
             className={`form-control select-style mt-3 ${classNameMeasure}`}
             name='unitMeasureMajor'
-            value={formik.values.unitMeasureMajor}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            ref={register}
           >
-            <option>Selecciona una unidad</option>
+            <option value=''>Selecciona una unidad</option>
             <option value='pieza' className='piece'>Pieza</option>
             <option value='bulto' className='bulto'>Bulto</option>
             <option value='caja' className='box'> Caja/Paquete</option>
           </select>
-          {
-            formik.touched.unitMeasureMajor && formik.errors.unitMeasureMajor ? (
-              <div className='text-alert-input'>
-                <p>{formik.errors.unitMeasureMajor}</p>
-              </div>
-            ) : null
-          }
+          <div className='text-alert-input'>
+            <p>{errors.unitMeasureMajor?.message}</p>
+          </div>
         </div>
         <p className='title-style-sec'>Stock Actual por cada</p>
         <div>
           {
-            formik.values.unitMeasureMajor === 'pieza' ? (
+            watchSelectMeasure === 'pieza' ? (
               <>
                 <p className='title-style-meassure'> <img src={iconPiece} alt='igm' /> Pieza</p>
                 <Warning content='Recuerda ingresar en la cantidad, el numero de PIEZAS en que el producto es comprado' />
               </>
-            ) : formik.values.unitMeasureMajor === 'bulto' ? (
+            ) : watchSelectMeasure === 'bulto' ? (
               <>
                 <p className='title-style-meassure'> <img src={iconBulto} alt='igm' /> Bulto</p>
                 <Warning content='Recuerda ingresar en la cantidad, el numero de BULTOS en que el producto es comprado' />
               </>
-            ) : formik.values.unitMeasureMajor === 'caja' ? (
+            ) : watchSelectMeasure === 'caja' ? (
               <>
                 <p className='title-style-meassure'> <img src={iconBoxStock} alt='igm' /> Caja</p>
                 <Warning content='Recuerda ingresar en la cantidad, el numero de CAJAS en que el producto es comprado' />
               </>
             ) : null
           }
-
         </div>
         <div className='d-flex mt-4'>
           <div className='form-group mr-2'>
             {
-              formik.values.unitMeasureMajor === 'pieza' ? (
+             watchSelectMeasure === 'pieza' ? (
                 <label className='label-style'>Cantidad de Piezas </label>
-              ) : formik.values.unitMeasureMajor === 'bulto' ? (
+              ) : watchSelectMeasure === 'bulto' ? (
                 <label className='label-style'>Cantidad de Bultos </label>
-              ) : formik.values.unitMeasureMajor === 'caja' ? (
+              ) : watchSelectMeasure === 'caja' ? (
                 <label className='label-style'>Cant. de Cajas </label>
               ) : null
             }
@@ -175,25 +149,19 @@ export default function Product () {
               name='quantityByMeasureMajor'
               className={`form-control input-style ${classNameQuantityMajor}`}
               placeholder='0'
-              value={formik.values.quantityByMeasureMajor}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              ref={register}
             />
-            {
-              formik.touched.quantityByMeasureMajor && formik.errors.quantityByMeasureMajor ? (
-                <div className='text-alert-input'>
-                  <p>{formik.errors.quantityByMeasureMajor}</p>
-                </div>
-              ) : null
-            }
+            <div className='text-alert-input'>
+              <p>{errors.quantityByMeasureMajor?.message}</p>
+            </div>
           </div>
           <div className='form-group mr-2'>
             {
-              formik.values.unitMeasureMajor === 'pieza' ? (
+              watchSelectMeasure === 'pieza' ? (
                 <label className='label-style'>Kilogramos por Pieza</label>
-              ) : formik.values.unitMeasureMajor === 'bulto' ? (
+              ) : watchSelectMeasure === 'bulto' ? (
                 <label className='label-style'>Kilogramos por Bulto</label>
-              ) : formik.values.unitMeasureMajor === 'caja' ? (
+              ) : watchSelectMeasure === 'caja' ? (
                 <label className='label-style'>Piezas por Caja</label>
               ) : null
             }
@@ -202,38 +170,32 @@ export default function Product () {
               name='quantityByMeasureMedia'
               className={`form-control input-style ${classNameQuantityMedia}`}
               placeholder='0'
-              value={formik.values.quantityByMeasureMedia}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              ref={register}
             />
-            {
-              formik.touched.quantityByMeasureMedia && formik.errors.quantityByMeasureMedia ? (
-                <div className='text-alert-input'>
-                  <p>{formik.errors.quantityByMeasureMedia}</p>
-                </div>
-              ) : null
-            }
+            <div className='text-alert-input'>
+              <p>{errors.quantityByMeasureMedia?.message}</p>
+            </div>
           </div>
           <div className='form-group'>
             {
-              formik.values.unitMeasureMajor === 'pieza' ? (
+              watchSelectMeasure === 'pieza' ? (
                 <label className='label-style'>Gramos totales</label>
-              ) : formik.values.unitMeasureMajor === 'bulto' ? (
+              ) : watchSelectMeasure === 'bulto' ? (
                 <label className='label-style'>Gramos totales</label>
-              ) : formik.values.unitMeasureMajor === 'caja' ? (
+              ) : watchSelectMeasure === 'caja' ? (
                 <label className='label-style'>Piezas totales</label>
               ) : null
             }
             {
-              formik.values.unitMeasureMajor === 'caja' ? (
+              watchSelectMeasure === 'caja' ? (
                 <input
                   type='number'
                   name='quantityByMeasureMinor'
                   className='form-control input-style'
                   placeholder='0'
                   readOnly
-                  onChange={formik.handleChange}
-                  value={formik.values.quantityByMeasureMajor * formik.values.quantityByMeasureMedia}
+                  ref={register}
+                  value={watchQuantities.quantityByMeasureMedia ? getValues('quantityByMeasureMajor') * getValues('quantityByMeasureMedia'): 0}
                 />
               ) : (
                 <input
@@ -242,36 +204,31 @@ export default function Product () {
                   className='form-control input-style-read'
                   placeholder='0'
                   readOnly
-                  onChange={formik.handleChange}
-                  value={(formik.values.quantityByMeasureMajor * 1000) * formik.values.quantityByMeasureMedia}
+                  ref={register}
+                  value={watchQuantities.quantityByMeasureMedia ? (getValues('quantityByMeasureMajor') * 1000) * getValues('quantityByMeasureMedia') : 0}
                 />
               )
             }
-
           </div>
         </div>
         {
-          errorMessage ? (
+          errorMessage && (
+            <>
             <div className='text-alert mb-4'>
               <div>
                 <span className='icon-error' />
                 <p>{errorMessage}</p>
               </div>
             </div>
-          ) : null
-        }
-        {
-          errorMessage ? (
             <button onClick={() => Router.back()} className='btn-gradient mt-2 mb-5'>
               <i className='fas fa-arrow-left mr-2' /> Escanear Otro
             </button>
-          ) : (
-            <button type='submit' className='btn-gradient mt-2 mb-5'>
-              Siguiente <i className='fas fa-arrow-right ml-2' />
-            </button>
+            </>
           )
         }
-
+        <button type='submit' className='btn-gradient mt-2 mb-5'>
+          Siguiente <i className='fas fa-arrow-right ml-2' />
+        </button>
       </form>
     </ProductWrapper>
   )
