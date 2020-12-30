@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Router, { useRouter } from 'next/router'
 import ProductWrapper from '../../components/layout/productWrapper'
-import { useFormik } from 'formik'
+import { useForm } from 'react-hook-form'
 import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 import boxes from '../../public/icon/boxes-icon.svg'
 import bultos from '../../public/icon/bultos-icon.svg'
@@ -10,6 +11,11 @@ import pieces from '../../public/icon/pieces-icon.svg'
 
 import { getToken } from '../../lib/'
 import { getById, updateById } from '../../services/products'
+
+const schema = Yup.object().shape({
+  stockMaxByMeasureMajor: Yup.number().min(1, 'Requerido').moreThan(Yup.ref('stockMinByMeasureMajor'), 'Mayor al min').positive('Inválido').required('Requerido').typeError('Invalido'),
+  stockMinByMeasureMajor: Yup.number().min(1, 'Requerido').lessThan(Yup.ref('stockMaxByMeasureMajor'), 'Menor al Max').positive('Inválido').required('Requerido').typeError('Invalido')
+})
 
 export default function MaxMin () {
   const [stockMaxByMeasureMinor, setStockMaxByMeasureMinor] = useState(0)
@@ -20,6 +26,32 @@ export default function MaxMin () {
     barcode,
     id
   } = router.query
+  const { register, handleSubmit, errors, getValues, watch } = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onBlur',
+    resolver: yupResolver(schema)
+  })
+
+  const watchQuantitiesMaxMin = watch(['stockMaxByMeasureMajor', 'stockMinByMeasureMajor'])
+
+  const onSubmit = async (dataToSend) => {
+    const newData = { ...product, ...dataToSend }
+    console.log(newData)
+    const token = getToken()
+    const response = await updateById(id, newData, token)
+    const responseJSON = await response.json()
+    const { success, data } = responseJSON
+    if (success) {
+      Router.push({
+        pathname: '/register/profit',
+        query: {
+          barcode,
+          id: data.product._id,
+          unitMeasureMajor
+        }
+      })
+    }
+  }
 
   const fetchData = async () => {
     const token = getToken()
@@ -37,55 +69,26 @@ export default function MaxMin () {
 
   const { currentQuantityByMeasureMinor, unitMeasureMajor, quantityByMeasureMajor, quantityByMeasureMedia } = product
 
-  const formik = useFormik({
-    initialValues: {
-      stockMaxByMeasureMajor: 0,
-      stockMinByMeasureMajor: 0
-    },
-    validationSchema: Yup.object({
-      stockMaxByMeasureMajor: Yup.number().min(1, 'Requerido').moreThan(Yup.ref('stockMinByMeasureMajor'), 'Inválido').positive('Inválido').required('Requerido'),
-      stockMinByMeasureMajor: Yup.number().min(1, 'Requerido').lessThan(Yup.ref('stockMaxByMeasureMajor'), 'Inválido').positive('Inválido').required('Requerido')
-    }),
-    onSubmit: async values => {
-      const newData = { ...product, ...values }
-      console.log(newData)
-      const token = getToken()
-      const response = await updateById(id, newData, token)
-      const responseJSON = await response.json()
-      const { success, data } = responseJSON
-      if (success) {
-        Router.push({
-          pathname: '/register/profit',
-          query: {
-            barcode,
-            id: data.product._id,
-            unitMeasureMajor
-          }
-        })
-      }
-    }
-  })
-
   useEffect(() => {
     let valueMax = 0
     let valueMin = 0
     if (unitMeasureMajor === 'caja') {
-      valueMax = (formik.values.stockMaxByMeasureMajor * quantityByMeasureMedia)
-      valueMin = (formik.values.stockMinByMeasureMajor * quantityByMeasureMedia)
+      valueMax = (getValues('stockMaxByMeasureMajor') * quantityByMeasureMedia)
+      valueMin = (getValues('stockMinByMeasureMajor') * quantityByMeasureMedia)
     } else {
-      valueMax = ((formik.values.stockMaxByMeasureMajor * 1000) * quantityByMeasureMedia)
-      valueMin = ((formik.values.stockMinByMeasureMajor * 1000) * quantityByMeasureMedia)
+      valueMax = ((getValues('stockMaxByMeasureMajor') * 1000) * quantityByMeasureMedia)
+      valueMin = ((getValues('stockMinByMeasureMajor') * 1000) * quantityByMeasureMedia)
     }
     setStockMaxByMeasureMinor(valueMax)
     setStockMinByMeasureMinor(valueMin)
-  }, [formik.values.stockMinByMeasureMajor])
+  }, [watchQuantitiesMaxMin])
 
-  const classNameStockMaxMajor = formik.touched.stockMaxByMeasureMajor && formik.errors.name ? 'inputErrorStockMaxMajor' : null
-  const classNameStockMinMajor = formik.touched.unitMeasureMajor && formik.errors.unitMeasureMajor ? 'inputErrorStockMinMajor' : null
+  const classNameStockMaxMajor = errors.name ? 'inputErrorStockMaxMajor' : null
+  const classNameStockMinMajor = errors.unitMeasureMajor ? 'inputErrorStockMinMajor' : null
 
   return (
     <ProductWrapper barcode={barcode}>
-      <form className='form-product' onSubmit={formik.handleSubmit}>
+      <form className='form-product' onSubmit={handleSubmit(onSubmit)}>
         <h3 className='title-style mt-3'>Stock: Máximos y Mínimos</h3>
         <hr />
 
@@ -116,7 +119,7 @@ export default function MaxMin () {
           <p className='title-style-meassure'>Deben haber en tu stock...?</p>
         </div>
 
-        <div className='d-flex mt-4'>
+        <div className='d-flex justify-content-center mt-4'>
           <div className='form-group mr-2'>
             {
               unitMeasureMajor === 'pieza' ? (
@@ -132,17 +135,11 @@ export default function MaxMin () {
               name='stockMaxByMeasureMajor'
               className={`form-control input-style ${classNameStockMaxMajor}`}
               placeholder='0'
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.stockMaxByMeasureMajor}
+              ref={register}
             />
-            {
-              formik.touched.stockMaxByMeasureMajor && formik.errors.stockMaxByMeasureMajor ? (
-                <div className='text-alert-input'>
-                  <p>{formik.errors.stockMaxByMeasureMajor}</p>
-                </div>
-              ) : null
-            }
+            <div className='text-alert-input'>
+              <p>{errors.stockMaxByMeasureMajor?.message}</p>
+            </div>
           </div>
           <div className='form-group mr-2'>
             {
@@ -159,21 +156,15 @@ export default function MaxMin () {
               name='stockMinByMeasureMajor'
               className={`form-control input-style ${classNameStockMinMajor}`}
               placeholder='0'
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.stockMinByMeasureMajor}
+              ref={register}
             />
-            {
-              formik.touched.stockMinByMeasureMajor && formik.errors.stockMinByMeasureMajor ? (
-                <div className='text-alert-input'>
-                  <p>{formik.errors.stockMinByMeasureMajor}</p>
-                </div>
-              ) : null
-            }
+            <div className='text-alert-input'>
+              <p>{errors.stockMinByMeasureMajor?.message}</p>
+            </div>
           </div>
         </div>
 
-        <div className='d-flex mt-4'>
+        <div className='d-flex justify-content-center mt-4'>
           <div className='form-group mr-2'>
             {
               unitMeasureMajor === 'pieza' ? (
@@ -188,11 +179,8 @@ export default function MaxMin () {
               type='number'
               className='form-control input-style-read'
               placeholder='0'
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={stockMaxByMeasureMinor}
+              value={watchQuantitiesMaxMin.stockMaxByMeasureMajor ? stockMaxByMeasureMinor : 0}
             />
-
           </div>
           <div className='form-group mr-2'>
             {
@@ -208,9 +196,7 @@ export default function MaxMin () {
               type='number'
               className='form-control input-style-read'
               placeholder='0'
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={stockMinByMeasureMinor}
+              value={watchQuantitiesMaxMin.stockMinByMeasureMajor ? stockMinByMeasureMinor : 0}
             />
 
           </div>
