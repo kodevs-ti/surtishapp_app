@@ -133,7 +133,7 @@ export default function Product () {
             ) : null
           }
         </div>
-        <div className='d-flex mt-4'>
+        <div className='d-flex align-items-center mt-4'>
           <div className='form-group mr-2'>
             {
              watchSelectMeasure === 'pieza' ? (
